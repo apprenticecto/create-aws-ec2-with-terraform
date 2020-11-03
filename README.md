@@ -18,7 +18,7 @@ This repo illustrates the basic steps to:
 - If don't have an AWS account, you can create one [here](https://aws.amazon.com/free/?trk=ps_a134p000003yhhbAAA&trkCampaign=acq_paid_search_brand&sc_channel=ps&sc_campaign=acquisition_IT&sc_publisher=google&sc_category=core&sc_country=IT&sc_geo=EMEA&sc_outcome=Acquisition&sc_detail=%2Baws%20%2Bfree&sc_content=Cost_bmm&sc_matchtype=b&sc_segment=455721528887&sc_medium=ACQ-P|PS-GO|Brand|Desktop|SU|AWS|Core|IT|EN|Text&s_kwcid=AL!4422!3!455721528887!b!!g!!%2Baws%20%2Bfree&ef_id=Cj0KCQjwlvT8BRDeARIsAACRFiW9L8Pday3clCH_UdQml3klBzGcZ5Pdy6bebFxcqndUFKA70qN892oaArbdEALw_wcB:G:s&s_kwcid=AL!4422!3!455721528887!b!!g!!%2Baws%20%2Bfree&all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc): you have access to a 12 months free tier program
 
 ### Install AWS CLI
-- If you already installed AWS CLI version1, follow the instruction [here](https://docs.aws.amazon.com/cli/latest/userguide/install-macos.html#install-macosos-bundled-uninstall) to uninstall it
+- If you already installed AWS CLI version1, follow the instructions [here](https://docs.aws.amazon.com/cli/latest/userguide/install-macos.html#install-macosos-bundled-uninstall) to uninstall it
 - Install the latest AWS CLI version 2 using MacOS command line by entering:
   - `$ curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"`
   - `sudo installer -pkg AWSCLIV2.pkg -target /`
@@ -29,11 +29,69 @@ This repo illustrates the basic steps to:
 - Detailed instructions and more options can be found [here](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-mac.html#cliv2-mac-install-cmd)
 
 ### Configure AWS CLI
-Configure your AWS CLI with your AWS credentials:
+Configure your AWS CLI with your AWS credentials (use your root if you just created your account, or an existing IAM user account):
 - enter `$ aws configure`
 - insert your account ID and Access Key ID, which you can find [here](https://console.aws.amazon.com/iam/home?#/security_credentials)
 - enter your default region
 - press enter for the default output format
+
+### Create and cd into a new folder which will contain your code
+After creating and entering your folder, sync it with your remote repo (see [this article](https://github.com/apprenticecto/create-your-github-account-and-repo-macos) to set it on Github)
+
+### ADD IAM User to your Root Account (if newly created)
+In case you've just created your root account, let's create a IAM user with EC2 privileges, following the best practice not to directly opeate with your root account (see [here](https://docs.aws.amazon.com/general/latest/gr/root-vs-iam.html) for more information):
+
+- add a file called iam_user_create.tf (or choose your name), with the following code:
+
+`
+ terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 2.70"
+    }
+  }
+}
+
+provider "aws" {
+  profile = "default"
+  region  = "us-west-2"
+}
+
+resource "aws_iam_user" "lb" {
+  name = "loadbalancer"
+  path = "/system/"
+
+  tags = {
+    tag-key = "tag-value"
+  }
+}
+
+resource "aws_iam_access_key" "lb" {
+  user = aws_iam_user.lb.name
+}
+
+resource "aws_iam_user_policy" "lb_ro" {
+  name = "test"
+  user = aws_iam_user.lb.name
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "ec2:Describe*"
+      ],
+      "Effect": "Allow",
+      "Resource": "*"
+    }
+  ]
+}
+EOF
+}`
+
+- 
 
 
 
