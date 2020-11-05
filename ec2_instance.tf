@@ -7,12 +7,25 @@ terraform {
   }
 }
 
+variable "region" {
+  default = "eu-central-1"
+}
+
+variable "ami" {
+  default = "ami-0c960b947cbb2dd16"
+}
+
+variable "instance_type" {
+  default = "t2.micro"
+}
+
 provider "aws" {
   # Configuration options
     profile = "default"
+    region  = var.region
 }
 
 resource "aws_instance" "example" {
-  ami           = "ami-830c94e3"
-  instance_type = "t2.micro"
+  ami           = var.ami
+  instance_type = var.instance_type
 }
