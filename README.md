@@ -1,8 +1,8 @@
 This repo illustrates the basic steps to:
 - install or upgrade terraform (if already installed) on your dev Mac
 - create your AWS account, with free tier (if you don't have one yet)
-- configure and launch an EC2 instance on AWS
-- login to the instance
+- configure, launch and then destroy an EC2 instance on AWS
+
 
 ### Install or update Terraform on your Mac
 
@@ -49,12 +49,16 @@ Following [AWS best practices on IAM](https://docs.aws.amazon.com/IAM/latest/Use
 - create an 'admin' group with 'Full Access EC2' policy attached
 - add the user to the admin group
 
-### Create and destroy an EC2
+### Create and destroy an EC2 instance
 The file `ec2_instance.tf` contains the Terraform code to create (and then destroy) an ec2 instance, with a specific [Amazon Machine Image](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AMIs.html).
 
-Run `terraform apply` to create the specified instance on your AWS account.
+Run `terraform apply` to create the specified instance on your AWS account. Type 'yes' when prompted, to confirm the creation.
 
-Run `terraform destroy` to create the specified instance on your AWS account.
+Check on your aws console that the instance is actually running.
+
+Run `terraform destroy` to create the specified instance on your AWS account. Type 'yes' when prompted, to confirm the destroy.
+
+Again, you should check from your console, that your instance is terminated.
 
 ### Commit and push your code to your remote repo
 After successfully destroying your instance:
