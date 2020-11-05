@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     aws = {
-      source = "hashicorp/aws"
+      source  = "hashicorp/aws"
       version = "3.13.0"
     }
   }
@@ -21,8 +21,8 @@ variable "instance_type" {
 
 provider "aws" {
   # Configuration options
-    profile = "default"
-    region  = var.region
+  profile = "default"
+  region  = var.region
 }
 
 resource "aws_instance" "example" {

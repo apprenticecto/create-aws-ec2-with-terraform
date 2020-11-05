@@ -36,7 +36,27 @@ Configure your AWS CLI with your AWS credentials (use your root if you just crea
 - press enter for the default output format
 
 ### Create and cd into a new folder which will contain your code
-After creating and entering your folder, sync it with your remote repo (see [this article](https://github.com/apprenticecto/create-your-github-account-and-repo-macos) to set it on Github)
+After creating and entering your folder, sync it with your remote repo (see [this article](https://github.com/apprenticecto/create-your-github-account-and-repo-macos) to set it on Github).
+
+You can fork this repo if you wish.
+
+If you don't, do not forget to add a .gitignore file (see contents in this repo), to avoid versioning state information and large files, which might fail.
+
+### Create a IAM user
+Following [AWS best practices on IAM](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html):
+- logon to your aws account
+- create an IAM user, with programmatic access (i.e. via AWS APIs)
+- create an 'admin' group with 'Full Access EC2' policy attached
+- add the user to the admin group
 
 ### Create and destroy an EC2
-File `ec2_instance.tf` ontains the Terrofrm code to create (and then destroy) an ec2 instance, with a specific [Amazon Machine Image](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AMIs.html).
+The file `ec2_instance.tf` contains the Terraform code to create (and then destroy) an ec2 instance, with a specific [Amazon Machine Image](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AMIs.html).
+
+Run `terraform apply` to create the specified instance on your AWS account.
+
+Run `terraform destroy` to create the specified instance on your AWS account.
+
+### Commit and push your code to your remote repo
+After successfully destroying your instance:
+- commit your code
+- push your committed code to your remote repo
